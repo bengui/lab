@@ -18,10 +18,10 @@
         app:layout_constraintVertical_bias="0.24000001" />
 
     <Button
-        android:id="@+id/button_first_fragment"
+        android:id="@+id/button_third_fragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_second_fragment"
+        android:text="@string/second_screen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
         android:layout_marginStart="68dp"
         android:layout_marginBottom="20dp"
         android:text="@string/load_users_list"
-        app:layout_constraintBottom_toTopOf="@+id/button_first_fragment"
+        app:layout_constraintBottom_toTopOf="@+id/button_third_fragment"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/clear"
-        app:layout_constraintBottom_toTopOf="@+id/button_first_fragment"
+        app:layout_constraintBottom_toTopOf="@+id/button_third_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.597"
         app:layout_constraintStart_toEndOf="@+id/load_users_button" />

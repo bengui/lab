@@ -2,7 +2,8 @@ package com.benguiman.lab.ui.second_screen
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import com.benguiman.lab.domain.Failure
+import com.benguiman.lab.domain.Success
 import com.benguiman.lab.domain.UserManager
 import com.benguiman.lab.ui.Navigator
 import com.benguiman.lab.ui.UserUi
@@ -15,11 +16,11 @@ class SecondPresenter @Inject constructor(
     val errorBannerMessage = MutableLiveData<String>()
 
     private val _userUiLiveData: MutableLiveData<List<UserUi>> = MutableLiveData()
-    val userUiLiveData: LiveData<List<UserUi>> =
-        Transformations.map(_userUiLiveData) { userUiList -> userUiList }
+    val userUiLiveData: LiveData<List<UserUi>>
+        get() = _userUiLiveData
 
-    fun secondFragmentButtonClick() {
-        navigator.navigateBack()
+    fun thirdFragmentButtonClick() {
+        navigator.navigateToThirdScreen()
     }
 
     fun displayUserList() {
@@ -35,15 +36,17 @@ class SecondPresenter @Inject constructor(
     }
 
     private fun fetchUserData(action: UserManager.Action) {
-        userManager.fetchUserListAsync(
-            action,
-            _userUiLiveData::postValue,
-            this::displayError
-        )
+        userManager.fetchUserListAsync(action) {
+            when (it) {
+                is Success -> _userUiLiveData.value = it.value
+                is Failure -> errorBannerMessage.value = "Error: ${it.error.message}"
+            }
+        }
+
     }
 
     fun displayError() {
-        errorBannerMessage.postValue("Error displayed by pressing the button")
+        errorBannerMessage.value = "Error displayed by pressing the button"
     }
 
 }

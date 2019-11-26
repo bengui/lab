@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), Navigator, MainActivityComponentProvid
     }
 
     override fun navigateToMenuScreen() {
-        navigateTo(MenuFragment())
+        navigateTo(MenuFragment(), false)
     }
 
     override fun navigateToFirstScreen() {
@@ -45,11 +45,14 @@ class MainActivity : AppCompatActivity(), Navigator, MainActivityComponentProvid
         supportFragmentManager.popBackStack()
     }
 
-    private fun navigateTo(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, fragment)
-            .addToBackStack(fragment::class.java.simpleName)
-            .commit()
+    private fun navigateTo(fragment: Fragment, addToBackStack: Boolean = true) {
+        with(supportFragmentManager.beginTransaction()) {
+            replace(R.id.main_container, fragment)
+            if (addToBackStack) {
+                addToBackStack(fragment::class.java.simpleName)
+            }
+            commit()
+        }
     }
 
     override fun getMainActivityComponent() = mainActivityComponent

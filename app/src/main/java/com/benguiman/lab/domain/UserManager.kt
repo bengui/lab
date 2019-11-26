@@ -1,7 +1,7 @@
 package com.benguiman.lab.domain
 
+import androidx.annotation.UiThread
 import com.benguiman.lab.ui.UserUi
-import java.util.concurrent.Future
 
 interface UserManager {
 
@@ -16,8 +16,7 @@ interface UserManager {
 
     fun fetchUserListAsync(
         action: Action,
-        success: (userList: List<UserUi>) -> Unit,
-        error: () -> Unit
+        @UiThread next: (userList: Result<List<UserUi>>) -> Unit
     )
 
     suspend fun fetchUserListSuspend(action: Action): Result<List<UserUi>>

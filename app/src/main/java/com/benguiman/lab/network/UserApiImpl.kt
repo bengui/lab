@@ -3,8 +3,10 @@ package com.benguiman.lab.network
 import android.util.Log
 import com.android.volley.Response
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.io.IOException
 import javax.inject.Inject
 
 
@@ -39,35 +41,41 @@ class UserApiImpl @Inject constructor(
         )
     }
 
-    override fun getUsers(): UserListDto {
+    @Throws(IOException::class, JsonSyntaxException::class)
+    private fun fetchUserList(): UserListDto {
+        Thread.sleep(2_000) // Simulates network delay
         val request = Request.Builder()
             .url(USERS_URL)
             .build()
         val response = client.newCall(request).execute()
         return gson.fromJson(response.body!!.string(), UserListDto::class.java)
+    }
+
+    @Throws(IOException::class, JsonSyntaxException::class)
+    private fun fetchUser(): UserDto {
+        Thread.sleep(2_000) // Simulates network delay
+        val request = Request.Builder()
+            .url(SINGLE_USER_URL)
+            .build()
+        val response = client.newCall(request).execute()
+        response.body?.let {
+            return gson.fromJson(it.string(), UserDto::class.java)
+        } ?: throw IOException()
+    }
+
+    override fun getUsers(): UserListDto {
+        return fetchUserList()
     }
 
     override fun getUser(): UserDto {
-        val request = Request.Builder()
-            .url(SINGLE_USER_URL)
-            .build()
-        val response = client.newCall(request).execute()
-        return gson.fromJson(response.body!!.string(), UserDto::class.java)
+        return fetchUser()
     }
 
     override suspend fun getUserListSuspend(): UserListDto {
-        val request = Request.Builder()
-            .url(USERS_URL)
-            .build()
-        val response = client.newCall(request).execute()
-        return gson.fromJson(response.body!!.string(), UserListDto::class.java)
+        return fetchUserList()
     }
 
     override suspend fun getUserSuspend(): UserDto {
-        val request = Request.Builder()
-            .url(SINGLE_USER_URL)
-            .build()
-        val response = client.newCall(request).execute()
-        return gson.fromJson(response.body!!.string(), UserDto::class.java)
+        return fetchUser()
     }
 }

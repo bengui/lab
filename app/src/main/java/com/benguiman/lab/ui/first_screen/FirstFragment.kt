@@ -51,7 +51,7 @@ class FirstFragment : Fragment(), FirstView {
                 adapter = usersAdapter
 
             }
-            view.findViewById<Button>(R.id.button_first_fragment).setOnClickListener {
+            view.findViewById<Button>(R.id.button_third_fragment).setOnClickListener {
                 firstPresenter.secondFragmentButtonClick()
             }
             view.findViewById<Button>(R.id.load_users_button).setOnClickListener {
