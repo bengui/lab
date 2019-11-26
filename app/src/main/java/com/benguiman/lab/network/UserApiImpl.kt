@@ -48,7 +48,10 @@ class UserApiImpl @Inject constructor(
             .url(USERS_URL)
             .build()
         val response = client.newCall(request).execute()
-        return gson.fromJson(response.body!!.string(), UserListDto::class.java)
+        response.body?.let {
+            return gson.fromJson(it.string(), UserListDto::class.java)
+        } ?: throw IOException("Response body is null")
+
     }
 
     @Throws(IOException::class, JsonSyntaxException::class)
@@ -60,7 +63,7 @@ class UserApiImpl @Inject constructor(
         val response = client.newCall(request).execute()
         response.body?.let {
             return gson.fromJson(it.string(), UserDto::class.java)
-        } ?: throw IOException()
+        } ?: throw IOException("Response body is null")
     }
 
     override fun getUsers(): UserListDto {
