@@ -23,7 +23,6 @@ class ThirdFragment : Fragment() {
     private lateinit var viewModel: ThirdScreenViewModel
     private lateinit var usersAdapter: UsersAdapter
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,27 +34,29 @@ class ThirdFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        (activity as MainActivityComponentProvider).getMainActivityComponent()
+        (activity as MainActivityComponentProvider)
+            .getMainActivityComponent()
             .inject(this)
 
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(ThirdScreenViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(ThirdScreenViewModel::class.java)
 
-        view?.findViewById<Button>(R.id.load_users_btn)?.setOnClickListener {
-            viewModel.loadUsers()
-        }
+        view?.let { view ->
+            view.findViewById<Button>(R.id.load_users_btn).setOnClickListener {
+                viewModel.loadUsers()
+            }
 
-        view?.findViewById<Button>(R.id.clear_btn)?.setOnClickListener {
-            viewModel.clearUsers()
-        }
+            view.findViewById<Button>(R.id.clear_btn).setOnClickListener {
+                viewModel.clearUsers()
+            }
 
-        usersAdapter = UsersAdapter()
+            usersAdapter = UsersAdapter()
 
-        view?.findViewById<RecyclerView>(R.id.users_list_recycler_view)?.apply {
-            setHasFixedSize(true)
-            layoutManager = LinearLayoutManager(activity)
-            adapter = usersAdapter
+            view.findViewById<RecyclerView>(R.id.users_list_recycler_view).apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(activity)
+                adapter = usersAdapter
+            }
         }
 
         viewModel.users.observe(this, Observer {
@@ -66,7 +67,6 @@ class ThirdFragment : Fragment() {
         viewModel.errorBannerMessage.observe(this, Observer {
             Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
         })
-
     }
 
 }

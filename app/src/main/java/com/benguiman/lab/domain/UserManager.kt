@@ -15,7 +15,7 @@ interface UserManager {
     )
 
     fun fetchUserListAsync(
-        action: UserManager.Action,
+        action: Action,
         success: (userList: List<UserUi>) -> Unit,
         error: () -> Unit
     )

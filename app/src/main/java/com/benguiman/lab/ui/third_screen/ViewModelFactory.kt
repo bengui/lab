@@ -12,9 +12,7 @@ class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Cl
     ViewModelProvider.Factory {
 
     init {
-        Log.d(
-            "LabApp", "init"
-        )
+        Log.d("LabApp", "init")
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

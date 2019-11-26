@@ -40,8 +40,6 @@ class UserApiImpl @Inject constructor(
     }
 
     override fun getUsers(): UserListDto {
-        //This is an extra delay to demonstrate the cache effect
-        Thread.sleep(3000)
         val request = Request.Builder()
             .url(USERS_URL)
             .build()

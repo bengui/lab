@@ -1,6 +1,5 @@
 package com.benguiman.lab.ui.second_screen
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,24 +21,9 @@ class SecondFragment : Fragment() {
     private lateinit var usersAdapter: UsersAdapter
     private lateinit var viewManager: RecyclerView.LayoutManager
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        (context as MainActivityComponentProvider).getMainActivityComponent()
-            .secondFragmentComponentBuilder()
-            .build()
-            .inject(this)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         usersAdapter = UsersAdapter()
-        presenter.userUiLiveData.observe(this, Observer {
-            usersAdapter.userList = it
-            usersAdapter.notifyDataSetChanged()
-        })
-        presenter.errorBannerMessage.observe(this, Observer {
-            Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
-        })
     }
 
     override fun onCreateView(
@@ -47,25 +31,44 @@ class SecondFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_second, container, false)
-        viewManager = LinearLayoutManager(activity!!)
-        view.findViewById<RecyclerView>(R.id.user_list_recycler_view).apply {
-            setHasFixedSize(true)
-            layoutManager = viewManager
-            adapter = usersAdapter
+        return inflater.inflate(R.layout.fragment_second, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (activity as MainActivityComponentProvider).getMainActivityComponent()
+            .secondFragmentComponentBuilder()
+            .build()
+            .inject(this)
+
+        viewManager = LinearLayoutManager(activity)
+
+        view?.let { view ->
+            view.findViewById<RecyclerView>(R.id.user_list_recycler_view).apply {
+                setHasFixedSize(true)
+                layoutManager = viewManager
+                adapter = usersAdapter
+            }
+            view.findViewById<Button>(R.id.button_first_fragment).setOnClickListener {
+                presenter.secondFragmentButtonClick()
+            }
+            view.findViewById<Button>(R.id.load_users_button).setOnClickListener {
+                presenter.displayUserList()
+            }
+            view.findViewById<Button>(R.id.clear_button).setOnClickListener {
+                presenter.clearUserList()
+            }
+            view.findViewById<Button>(R.id.error_button).setOnClickListener {
+                presenter.displayError()
+            }
         }
-        view.findViewById<Button>(R.id.button_first_fragment).setOnClickListener {
-            presenter.secondFragmentButtonClick()
-        }
-        view.findViewById<Button>(R.id.load_users_button).setOnClickListener {
-            presenter.displayUserList()
-        }
-        view.findViewById<Button>(R.id.clear_button).setOnClickListener {
-            presenter.clearUserList()
-        }
-        view.findViewById<Button>(R.id.error_button).setOnClickListener {
-            presenter.displayError()
-        }
-        return view
+
+        presenter.userUiLiveData.observe(this, Observer {
+            usersAdapter.userList = it
+            usersAdapter.notifyDataSetChanged()
+        })
+        presenter.errorBannerMessage.observe(this, Observer {
+            Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+        })
     }
 }
