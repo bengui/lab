@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -57,6 +58,14 @@ class ThirdFragment : Fragment() {
                 layoutManager = LinearLayoutManager(activity)
                 adapter = usersAdapter
             }
+
+            val subTitleTextView = view.findViewById<TextView>(R.id.sub_title_text_view)
+
+            viewModel.subTitle.observe(this, Observer {
+                subTitleTextView.text = it
+            })
+
+            viewModel.startSubtitleTimer()
         }
 
         viewModel.users.observe(this, Observer {

@@ -6,6 +6,8 @@ import com.benguiman.lab.domain.Success
 import com.benguiman.lab.domain.UserManager
 import com.benguiman.lab.ui.UserUi
 import com.benguiman.lab.ui.transformUserToUserUi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ThirdScreenViewModel @Inject constructor(private val userManager: UserManager) : ViewModel() {
@@ -14,6 +16,9 @@ class ThirdScreenViewModel @Inject constructor(private val userManager: UserMana
     private val _errorBannerMessage = MutableLiveData<String>()
     val errorBannerMessage: LiveData<String>
         get() = _errorBannerMessage
+
+    private val _title = MutableLiveData<String>()
+    val subTitle get() = _title
 
     val users: LiveData<List<UserUi>> =
         Transformations.switchMap(requestData) { action ->
@@ -36,6 +41,17 @@ class ThirdScreenViewModel @Inject constructor(private val userManager: UserMana
 
     fun clearUsers() {
         requestData.value = UserManager.Action.CLEAR
+    }
+
+    fun startSubtitleTimer() {
+        viewModelScope.launch {
+            var number = 1
+            while (number < 100) {
+                delay(1_000)
+                _title.value = number.toString()
+                number++
+            }
+        }
     }
 
 }
