@@ -3,8 +3,6 @@ package com.benguiman.lab.domain
 import android.util.Log
 import androidx.annotation.UiThread
 import com.benguiman.lab.network.UserApi
-import com.benguiman.lab.ui.UserUi
-import com.benguiman.lab.ui.transformUserToUserUi
 import com.google.gson.JsonSyntaxException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -33,13 +31,13 @@ class UserManagerImpl @Inject constructor(
 
     override fun fetchUserListAsync(
         action: UserManager.Action,
-        @UiThread next: (userList: Result<List<UserUi>>) -> Unit
+        @UiThread next: (userList: Result<List<User>>) -> Unit
     ) {
         doAsync {
             try {
                 val userUiList = when (action) {
-                    UserManager.Action.FETCH_USERS -> getUserUiList(userApi)
-                    UserManager.Action.FORCE_FETCH_USERS -> getUserUiList(userApi)
+                    UserManager.Action.FETCH_USERS -> getUserList(userApi)
+                    UserManager.Action.FORCE_FETCH_USERS -> getUserList(userApi)
                     UserManager.Action.CLEAR -> listOf()
                 }
                 uiThread {
@@ -58,17 +56,15 @@ class UserManagerImpl @Inject constructor(
         }
     }
 
-    private fun getUserUiList(userApi: UserApi) = transformUserToUserUi(getUserList(userApi))
-
     private fun getUserList(userApi: UserApi) = transformUserDtoToUser(userApi.getUsers())
 
-    override suspend fun fetchUserListSuspend(action: UserManager.Action): Result<List<UserUi>> {
+    override suspend fun fetchUserListSuspend(action: UserManager.Action): Result<List<User>> {
         return withContext(Dispatchers.IO) {
             try {
                 Success(
                     when (action) {
-                        UserManager.Action.FETCH_USERS -> getUserUiList(userApi)
-                        UserManager.Action.FORCE_FETCH_USERS -> getUserUiList(userApi)
+                        UserManager.Action.FETCH_USERS -> getUserList(userApi)
+                        UserManager.Action.FORCE_FETCH_USERS -> getUserList(userApi)
                         UserManager.Action.CLEAR -> listOf()
                     }
                 )
@@ -78,7 +74,7 @@ class UserManagerImpl @Inject constructor(
         }
     }
 
-    private fun handleNetworkException(exception: Exception): Failure<List<UserUi>> {
+    private fun handleNetworkException(exception: Exception): Failure<List<User>> {
         return when (exception) {
             is IOException, is JsonSyntaxException -> {
                 Log.d("UserManager", exception.message)
@@ -88,7 +84,7 @@ class UserManagerImpl @Inject constructor(
         }
     }
 
-    override suspend fun getMultiSourceUserListSuspend(): Result<List<UserUi>> {
+    override suspend fun getMultiSourceUserListSuspend(): Result<List<User>> {
         return withContext(Dispatchers.IO) {
             try {
                 val usersList = getUserListSuspend()
@@ -103,36 +99,30 @@ class UserManagerImpl @Inject constructor(
     }
 
     @Throws(IOException::class)
-    private suspend fun getUserListSuspend(): List<UserUi> {
+    private suspend fun getUserListSuspend(): List<User> {
         return userApi.getUserListSuspend()
             .map(::transformUserDtoToUser)
-            .map(::transformUserToUserUi)
     }
 
     @Throws(IOException::class)
-    private suspend fun getUserSuspend(): UserUi {
-        return transformUserToUserUi(
-            transformUserDtoToUser(
-                userApi.getUserSuspend()
-            )
+    private suspend fun getUserSuspend(): User {
+        return transformUserDtoToUser(
+            userApi.getUserSuspend()
+
         )
     }
 
-    override suspend fun getMultiSourceUserListSuspendWithRegularApi(): Result<List<UserUi>> {
+    override suspend fun getMultiSourceUserListSuspendWithRegularApi(): Result<List<User>> {
         return withContext(Dispatchers.IO) {
             try {
                 val usersList = async {
-                    transformUserToUserUi(
-                        transformUserDtoToUser(
-                            userApi.getUsers()
-                        )
+                    transformUserDtoToUser(
+                        userApi.getUsers()
                     )
                 }
                 val user = async {
-                    transformUserToUserUi(
-                        transformUserDtoToUser(
-                            userApi.getUser()
-                        )
+                    transformUserDtoToUser(
+                        userApi.getUser()
                     )
                 }
                 val mutableUsersList = usersList.await().toMutableList()

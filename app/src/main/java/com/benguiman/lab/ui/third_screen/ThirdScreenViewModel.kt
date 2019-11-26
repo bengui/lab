@@ -5,6 +5,7 @@ import com.benguiman.lab.domain.Failure
 import com.benguiman.lab.domain.Success
 import com.benguiman.lab.domain.UserManager
 import com.benguiman.lab.ui.UserUi
+import com.benguiman.lab.ui.transformUserToUserUi
 import javax.inject.Inject
 
 class ThirdScreenViewModel @Inject constructor(private val userManager: UserManager) : ViewModel() {
@@ -19,7 +20,7 @@ class ThirdScreenViewModel @Inject constructor(private val userManager: UserMana
             liveData {
                 when (val result = userManager.fetchUserListSuspend(action)) {
                     is Success -> {
-                        emit(result.value)
+                        emit(transformUserToUserUi(result.value))
                     }
                     is Failure -> {
                         _errorBannerMessage.value =

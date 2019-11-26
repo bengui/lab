@@ -16,12 +16,12 @@ interface UserManager {
 
     fun fetchUserListAsync(
         action: Action,
-        @UiThread next: (userList: Result<List<UserUi>>) -> Unit
+        @UiThread next: (userList: Result<List<User>>) -> Unit
     )
 
-    suspend fun fetchUserListSuspend(action: Action): Result<List<UserUi>>
+    suspend fun fetchUserListSuspend(action: Action): Result<List<User>>
 
-    suspend fun getMultiSourceUserListSuspend(): Result<List<UserUi>>
+    suspend fun getMultiSourceUserListSuspend(): Result<List<User>>
 
-    suspend fun getMultiSourceUserListSuspendWithRegularApi(): Result<List<UserUi>>
+    suspend fun getMultiSourceUserListSuspendWithRegularApi(): Result<List<User>>
 }

@@ -7,6 +7,7 @@ import com.benguiman.lab.domain.Success
 import com.benguiman.lab.domain.UserManager
 import com.benguiman.lab.ui.Navigator
 import com.benguiman.lab.ui.UserUi
+import com.benguiman.lab.ui.transformUserToUserUi
 import javax.inject.Inject
 
 class SecondPresenter @Inject constructor(
@@ -38,7 +39,7 @@ class SecondPresenter @Inject constructor(
     private fun fetchUserData(action: UserManager.Action) {
         userManager.fetchUserListAsync(action) {
             when (it) {
-                is Success -> _userUiLiveData.value = it.value
+                is Success -> _userUiLiveData.value = transformUserToUserUi(it.value)
                 is Failure -> errorBannerMessage.value = "Error: ${it.error.message}"
             }
         }
