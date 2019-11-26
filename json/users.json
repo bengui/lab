@@ -1,0 +1,23 @@
+[
+    {
+        "name" : "Eddie",
+        "last_name" : "Vedder",
+        "age" : 51
+    },
+    {
+        "name" : "Omar",
+        "last_name" : "Rodríguez-López",
+        "age" : 40
+    },
+    {
+        "name" : "James",
+        "last_name" : "Hetfield",
+        "age" : 52
+    },
+    {
+        "name" : "Jimmy",
+        "last_name" : "Page",
+        "age" : 72
+    }
+
+]

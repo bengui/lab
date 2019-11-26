@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Lab</string>
+    <string name="first_fragment">First Fragment</string>
+    <string name="second_fragment">Second Fragment</string>
+    <string name="button_second_fragment">Second Fragment</string>
+    <string name="button_first_fragment">First Fragment</string>
+    <string name="load_users_list">Load Users</string>
+    <string name="clear">Clear</string>
+    <string name="error">Error</string>
+    <string name="first_screen">First Screen</string>
+    <string name="second_screen">Second Screen</string>
+    <string name="third_screen">Third Screen</string>
+</resources>

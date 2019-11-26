@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/first_screen_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/first_screen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="110dp" />
+
+    <Button
+        android:id="@+id/second_screen_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/second_screen"
+        app:layout_constraintEnd_toEndOf="@+id/first_screen_btn"
+        app:layout_constraintStart_toStartOf="@+id/first_screen_btn"
+        app:layout_constraintTop_toBottomOf="@+id/first_screen_btn" />
+
+    <Button
+        android:id="@+id/third_screen_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/third_screen"
+        app:layout_constraintEnd_toEndOf="@+id/second_screen_btn"
+        app:layout_constraintStart_toStartOf="@+id/second_screen_btn"
+        app:layout_constraintTop_toBottomOf="@+id/second_screen_btn" />
+</androidx.constraintlayout.widget.ConstraintLayout>
