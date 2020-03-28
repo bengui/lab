@@ -1,13 +1,11 @@
-package com.benguiman.lab.ui.third_screen
+package com.benguiman.lab.ui
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.benguiman.lab.di.ActivityScope
 import javax.inject.Inject
 import javax.inject.Provider
 
-@ActivityScope
 class ViewModelFactory @Inject constructor(private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>) :
     ViewModelProvider.Factory {
 

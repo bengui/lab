@@ -1,5 +1,6 @@
 package com.benguiman.lab.di
 
+import com.benguiman.lab.ui.MainActivity
 import com.benguiman.lab.ui.Navigator
 import com.benguiman.lab.ui.menu_screen.MenuFragment
 import com.benguiman.lab.ui.third_screen.ThirdFragment
@@ -21,6 +22,8 @@ interface MainActivityComponent {
     fun firstFragmentComponentBuilder(): FirstFragmentComponent.Builder
 
     fun secondFragmentComponentBuilder(): SecondFragmentComponent.Builder
+
+    fun inject(mainActivity: MainActivity)
 
     fun inject(fragment: MenuFragment)
 

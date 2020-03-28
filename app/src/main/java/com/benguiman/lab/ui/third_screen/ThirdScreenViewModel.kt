@@ -17,6 +17,8 @@ class ThirdScreenViewModel @Inject constructor(private val userManager: UserMana
     val errorBannerMessage: LiveData<String>
         get() = _errorBannerMessage
 
+    private var timerStarted = false
+
     private val _title = MutableLiveData<String>()
     val subTitle get() = _title
 
@@ -44,12 +46,15 @@ class ThirdScreenViewModel @Inject constructor(private val userManager: UserMana
     }
 
     fun startSubtitleTimer() {
-        viewModelScope.launch {
-            var number = 1
-            while (number < 100) {
-                delay(1_000)
-                _title.value = number.toString()
-                number++
+        if (!timerStarted) {
+            timerStarted = true
+            viewModelScope.launch {
+                var number = 1
+                while (number < 100) {
+                    delay(1_000)
+                    _title.value = number.toString()
+                    number++
+                }
             }
         }
     }

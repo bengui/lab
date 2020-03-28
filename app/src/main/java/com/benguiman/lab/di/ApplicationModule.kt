@@ -1,7 +1,9 @@
 package com.benguiman.lab.di
 
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider
 import com.benguiman.lab.network.VolleyRequestProcessor
+import com.benguiman.lab.ui.ViewModelFactory
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -28,4 +30,11 @@ class ApplicationModule {
     fun provideGson(): Gson {
         return Gson()
     }
+
+    @Singleton
+    @Provides
+    fun provideViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory {
+        return factory
+    }
+
 }

@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.benguiman.lab.R
 import com.benguiman.lab.ui.MainActivityComponentProvider
+import com.benguiman.lab.ui.ViewModelFactory
 import com.benguiman.lab.ui.users_commons.UsersAdapter
 import javax.inject.Inject
 
@@ -39,7 +40,7 @@ class ThirdFragment : Fragment() {
             .getMainActivityComponent()
             .inject(this)
 
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
+        viewModel = ViewModelProviders.of(activity!!, viewModelFactory)
             .get(ThirdScreenViewModel::class.java)
 
         view?.let { view ->
